@@ -7,80 +7,93 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using UAVImplementation.ServiceLayer;
+using UAVImplementation.ControlLayer;
+using UAVImplementation.BusinessLayer;
 using System.Net.Sockets;
 
 namespace UAVImplementation.PresentationLayer
 {
     public partial class UAV_UI : Form
     {
-        UDPReceiver udpReceiver;
-        UDPSender udpSender;
-        private bool isReceivingCoordinates = false;
-        //private float[] shipCoordinates;
-        public float[] shipCoordinates;
-        
+        //UDPReceiver udpReceiver;
+        //UDPSender udpSender;
+        private bool isReceivingData = false;
+        UAVRecieveController receiveController;
+        UAVSendController sendController;
+
         public UAV_UI()
         {
             InitializeComponent();
         }
 
-        private void btnCalibrate_Click(object sender, EventArgs e)
+        private void btnEstComms_Click(object sender, EventArgs e)
         {
-            
-            
             try
             {
-                udpReceiver = new UDPReceiver(Convert.ToInt32(txtBoxShipPortNo.Text));
+                receiveController = new UAVRecieveController(Convert.ToInt32(txtBoxReceivePortNo.Text));
 
-                udpReceiver.PropertyChanged += new PropertyChangedEventHandler(shipCoordinatesPropertyChange);
+                receiveController.PropertyChanged += new PropertyChangedEventHandler(controllerPropertyChange);
 
-                udpReceiver.StartConnection();
+                receiveController.startUDPReceiver();
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An Error occurred with the Receive socket: " +
-                    ex.Message);
+                Console.WriteLine("An Error occurred with the Receive socket: " + ex.Message);
             }
         }
 
         private void btnIntercept_Click(object sender, EventArgs e)
         {
-            if (isReceivingCoordinates)
+            try
             {
-                udpSender = new UDPSender("192.168.1.101", 9060);
-                udpSender.startUDPSender();
+                if (isReceivingData)
+                {
+                    //isIntercept = true;
+                    sendController = new UAVSendController(txtBoxSendIPAddress.Text,
+                                            Convert.ToInt32(txtBoxSendPortNo.Text));
+
+                    sendController.startUDPSender();
+                }
+                else
+                {
+                    MessageBox.Show("You must select the 'Establish Comms' button first...", "Warning!");
+                    btnEstComms.Focus();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("You must select the 'Calibrate' button first...", "Warning!");
+                Console.WriteLine("An Error occurred with the Send socket: " + ex.Message);
             }
         }
 
-        private void shipCoordinatesPropertyChange(object sender, PropertyChangedEventArgs e)
+        private void controllerPropertyChange(object sender, PropertyChangedEventArgs e)
         {
-            shipCoordinates = udpReceiver.ShipCoordinates;
-
-            isReceivingCoordinates = true;
-
-            //upDateUI();
+            if(e.PropertyName.Equals("IsReceiving"))
+            {
+                isReceivingData = receiveController.IsReceiving;
+                upDateUI();
+            }
         }
 
         private void upDateUI()
         {
-            //string message = (shipCoordinates[0] + ", " + shipCoordinates[1] + ", " + shipCoordinates[2] +"\n");
-            //txtBoxShipCoords.SelectedText += System.Environment.NewLine + (message);
-            //Console.WriteLine(message);
-
-            //txtBoxShipCoords.Invoke(new UpdateTextCallback(this.UpdateText), 
-            //new object[]{message});
+            txtBoxConnectionStatus.Invoke(new UpdateTextCallback(this.UpdateTxtBoxStatus),
+            new object[] { "Connected..." });
         }
 
         public delegate void UpdateTextCallback(string message);
 
-        private void UpdateText(string message)
+        private void UpdateTxtBoxStatus(string message)
         {
-            txtBoxShipCoords.SelectedText += System.Environment.NewLine + (message);
+            txtBoxConnectionStatus.Text = message;
+            txtBoxConnectionStatus.BackColor = Color.LightGreen;
         }
+
+        private void btnTemp_Click(object sender, EventArgs e)
+        {
+            FlightStatusSingleton.getInstance().IsTouchdown = true;
+        }
+
     }
 }
 

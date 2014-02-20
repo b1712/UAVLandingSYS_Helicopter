@@ -19,6 +19,8 @@ namespace UAVImplementation.ServiceLayer
 
         private float[] shipCoordinates = new float[1];
 
+        private bool isReceivingCoordinates;
+
         public float[] ShipCoordinates
         {
             get { return shipCoordinates; }
@@ -29,6 +31,17 @@ namespace UAVImplementation.ServiceLayer
             }
         }
 
+
+        public bool IsReceivingCoordinates
+        {
+            get { return isReceivingCoordinates; }
+            set 
+            { 
+                this.isReceivingCoordinates = value;
+                NotifyPropertyChanged("IsReceivingCoordinates");
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public UDPReceiver(int port)
@@ -36,17 +49,23 @@ namespace UAVImplementation.ServiceLayer
             this.port = port;
         }
 
-        public void StartConnection()
+        public void startConnection()
         {
-            floatArray[0] = -130.0f;
+            //floatArray[0] = -130.0f;
+            try
+            {
+                udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                udpSocket.Bind(new IPEndPoint(IPAddress.Any, port));
+                buffer = new byte[1024];
 
-            udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            udpSocket.Bind(new IPEndPoint(IPAddress.Any, port));
-            buffer = new byte[1024];
-
-            EndPoint newClientEP = new IPEndPoint(IPAddress.Any, 0);
-            udpSocket.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, 
-                                ref newClientEP, doReceiveCoordinates, udpSocket);
+                EndPoint newClientEP = new IPEndPoint(IPAddress.Any, 0);
+                udpSocket.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None,
+                                    ref newClientEP, doReceiveCoordinates, udpSocket);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in Receiver startup: " + ex.Message);
+            }
         }
 
         private void doReceiveCoordinates(IAsyncResult iAsynResult)
@@ -73,12 +92,17 @@ namespace UAVImplementation.ServiceLayer
                     index += sizeof(float);
                 }
 
+                if (!IsReceivingCoordinates)
+                {
+                    IsReceivingCoordinates = true;
+                }
+
                 ShipCoordinates = floatArray;
 
             }
             catch (ObjectDisposedException ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine("Error with Receive method: " + ex.Message);
             }
         }
 

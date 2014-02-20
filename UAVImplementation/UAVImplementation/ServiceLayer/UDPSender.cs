@@ -13,9 +13,10 @@ namespace UAVImplementation.ServiceLayer
     class UDPSender
     {
         private string ipAddress;
-        private int port = 9060;
-        private float amount = -130.0f;
-        UAV_UI ui = new UAV_UI();
+        private int port;
+        private float zCoord;
+        private float yCoord;
+        private float xCoord;
        
         public UDPSender(string ipAddress, int port)
         {
@@ -23,23 +24,22 @@ namespace UAVImplementation.ServiceLayer
             this.port = port;
         }
 
-        public void startUDPSender()
+        public void startSender(float[] coordinates)
         {
-            IPEndPoint ipep = new IPEndPoint(IPAddress.Parse(ipAddress), port);
+            IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
             Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
-            for (int i = 0; i < 500; i++)
-            {
-                amount = ui.shipCoordinates[1];
+            xCoord = coordinates[3];
+            yCoord = coordinates[4];
+            zCoord = coordinates[5];
 
+            var floatArray1 = new float[] { xCoord, yCoord + 40.0f, zCoord };
 
-                    var floatArray1 = new float[] { amount };
+            var byteArray = new byte[floatArray1.Length * 4];
+            Buffer.BlockCopy(floatArray1, 0, byteArray, 0, byteArray.Length);
 
-                    var byteArray = new byte[floatArray1.Length * 4];
-                    Buffer.BlockCopy(floatArray1, 0, byteArray, 0, byteArray.Length);
+            server.SendTo(byteArray, byteArray.Length, SocketFlags.None, ipEndPoint);
 
-                    server.SendTo(byteArray, byteArray.Length, SocketFlags.None, ipep);
-            }
         }
     }
 }

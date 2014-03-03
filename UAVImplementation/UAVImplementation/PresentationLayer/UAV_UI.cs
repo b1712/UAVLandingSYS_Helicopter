@@ -1,58 +1,75 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using UAVImplementation.ServiceLayer;
 using UAVImplementation.ControlLayer;
 using UAVImplementation.BusinessLayer;
-using System.Net.Sockets;
 
 namespace UAVImplementation.PresentationLayer
 {
-    public partial class UAV_UI : Form
+    public partial class UavUi : Form
     {
-        //UDPReceiver udpReceiver;
-        //UDPSender udpSender;
-        private bool isReceivingData = false;
-        UAVRecieveController receiveController;
-        UAVSendController sendController;
+        #region fields
 
-        public UAV_UI()
+        private bool _isReceivingData;
+        private UavRecieveController _receiveController;
+        //UAVSendController sendController;
+        private UavController _uavController;
+        private FlightStatusSingleton _flightStatus;
+        private readonly double[] _uavStartPoint = new double[3];
+        private double[] _cameraSetup = new double[4]; 
+        //private double _focalLength;
+        //private double _ccdWidth;
+        //private double _ccdHeight;
+        //private double _megaPixels;
+
+        #endregion
+
+        public UavUi()
         {
             InitializeComponent();
         }
 
-        private void btnEstComms_Click(object sender, EventArgs e)
+        private void BtnEstCommsClick(object sender, EventArgs e)
         {
             try
             {
-                receiveController = new UAVRecieveController(Convert.ToInt32(txtBoxReceivePortNo.Text));
+                _receiveController = new UavRecieveController(Convert.ToInt32(txtBoxReceivePortNo.Text));
 
-                receiveController.PropertyChanged += new PropertyChangedEventHandler(controllerPropertyChange);
+                _receiveController.PropertyChanged += ControllerPropertyChange;
 
-                receiveController.startUDPReceiver();
+                _receiveController.StartUdpReceiver();
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An Error occurred with the Receive socket: " + ex.Message);
+                Console.WriteLine("An Error occured in " + ex.TargetSite + "..." + ex.Message);
             }
         }
 
-        private void btnIntercept_Click(object sender, EventArgs e)
+        private void BtnInterceptClick(object sender, EventArgs e)
         {
             try
             {
-                if (isReceivingData)
+                _uavStartPoint[0] = double.Parse(txtBoxFocalX.Text);
+                _uavStartPoint[1] = double.Parse(txtBoxFocalY.Text);
+                _uavStartPoint[2] = double.Parse(txtBoxFocalZ.Text);
+                _cameraSetup[0] = double.Parse(txtBoxFocalLength.Text);
+                _cameraSetup[1] = double.Parse(txtBoxCcdWidth.Text);
+                _cameraSetup[2] = double.Parse(txtBoxCcdHeight.Text);
+                _cameraSetup[3] = double.Parse(txtBoxMegapixels.Text);
+                
+                if (_isReceivingData)
                 {
-                    //isIntercept = true;
-                    sendController = new UAVSendController(txtBoxSendIPAddress.Text,
-                                            Convert.ToInt32(txtBoxSendPortNo.Text));
+                    _uavController = new UavController(_uavStartPoint);
+                    _uavController.StartIntercept(_cameraSetup);
 
-                    sendController.startUDPSender();
+                    _flightStatus = FlightStatusSingleton.GetInstance();
+                    _flightStatus.PropertyChanged += FlightStatusPropertyChange;
+
+                    //sendController = new UAVSendController(txtBoxSendIPAddress.Text,
+                    //                        Convert.ToInt32(txtBoxSendPortNo.Text));
+
+                    //sendController.startUDPSender();
                 }
                 else
                 {
@@ -62,36 +79,60 @@ namespace UAVImplementation.PresentationLayer
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An Error occurred with the Send socket: " + ex.Message);
+                Console.WriteLine("An Error occured in " + ex.TargetSite + "..." + ex.Message);
             }
         }
 
-        private void controllerPropertyChange(object sender, PropertyChangedEventArgs e)
+        private void ControllerPropertyChange(object sender, PropertyChangedEventArgs e)
         {
             if(e.PropertyName.Equals("IsReceiving"))
             {
-                isReceivingData = receiveController.IsReceiving;
-                upDateUI();
+                _isReceivingData = _receiveController.IsReceiving;
+                UpdateUiConnection();
             }
         }
 
-        private void upDateUI()
+        private void FlightStatusPropertyChange(object sender, PropertyChangedEventArgs e)
         {
-            txtBoxConnectionStatus.Invoke(new UpdateTextCallback(this.UpdateTxtBoxStatus),
-            new object[] { "Connected..." });
+            if (e.PropertyName.Equals("IsTouchdown"))
+            {
+                if(FlightStatusSingleton.GetInstance().IsTouchdown)
+                {
+                    UpdateUiFlightStatusLanded();
+                }
+            }
         }
 
         public delegate void UpdateTextCallback(string message);
+        
+        private void UpdateUiConnection()
+        {
+            txtBoxConnectionStatus.Invoke(new UpdateTextCallback(UpdateConnectionTxtBox),
+                    new object[] { "Connected..." });
+        }
 
-        private void UpdateTxtBoxStatus(string message)
+        private void UpdateConnectionTxtBox(string message)
         {
             txtBoxConnectionStatus.Text = message;
             txtBoxConnectionStatus.BackColor = Color.LightGreen;
         }
 
-        private void btnTemp_Click(object sender, EventArgs e)
+        private void UpdateUiFlightStatusLanded()
         {
-            FlightStatusSingleton.getInstance().IsTouchdown = true;
+            txtBoxFlightStatus.Invoke(new UpdateTextCallback(UpdateFlightStatusTxtBox),
+                    new object[] { "Landed..." });
+        }
+
+        private void UpdateFlightStatusTxtBox(string message)
+        {
+            txtBoxFlightStatus.Text = message;
+            txtBoxFlightStatus.BackColor = Color.LightGreen;
+        }
+
+        //********************TEMP********************
+        private void BtnTempClick(object sender, EventArgs e)
+        {
+            FlightStatusSingleton.GetInstance().IsTouchdown = true;
         }
 
     }

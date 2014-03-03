@@ -1,72 +1,85 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UAVImplementation.ServiceLayer;
-using UAVImplementation.BusinessLayer;
+﻿using UAVImplementation.ServiceLayer;
 using UAVImplementation.BusinessLayer.CameraSimulator;
 using System.ComponentModel;
+using System;
 
 namespace UAVImplementation.ControlLayer
 {
-    public class UAVRecieveController : INotifyPropertyChanged
+    public class UavRecieveController : INotifyPropertyChanged
     {
-        private bool isReceiving;
-        private float[] receivedCoordinates;
-        private int port;
-        UDPReceiver udpReceiver;
-        ReceiveData receiveData;
+        #region fields
 
-        public float[] ReceivedCoordinates
+        private bool _isReceiving;
+        private double[] _receivedShipCoordinates;
+        private readonly int _port;
+        private UdpReceiver _udpReceiver;
+
+        #endregion
+
+        #region Class Properties
+
+        public double[] ReceivedShipCoordinates
         {
-            get { return receivedCoordinates; }
+            get { return _receivedShipCoordinates; }
             set
             {
-                receivedCoordinates = value;
-                NotifyPropertyChanged("ReceivedCoordinates");
+                _receivedShipCoordinates = value;
+                NotifyPropertyChanged("ReceivedShipCoordinates");
             }
         }
 
         public bool IsReceiving
         {
-            get { return isReceiving; }
+            get { return _isReceiving; }
             set
             {
-                this.isReceiving = value;
+                _isReceiving = value;
                 NotifyPropertyChanged("IsReceiving");
             }
         }
-        
-        
-        public UAVRecieveController(int port)
+
+        #endregion
+
+        #region Handler and Notify Method
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged(string propertyName)
         {
-            this.port = port;
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
-        public void startUDPReceiver()
-        {
-            udpReceiver = new UDPReceiver(port);
-            receiveData = new ReceiveData();
+        #endregion
 
-            udpReceiver.PropertyChanged += new PropertyChangedEventHandler(UDPReceiverPropertyChange);
+        public UavRecieveController(int port)
+        {
+            _port = port;
+        }
+
+        public void StartUdpReceiver()
+        {
+            _udpReceiver = new UdpReceiver(_port);
+
+            ImageDataSingleton.GetInstance().SetupReceiveListner(this);
+
+            _udpReceiver.PropertyChanged += UdpReceiverPropertyChange;
             
-            udpReceiver.startConnection();
+            _udpReceiver.StartConnection();
         }
 
-        private void UDPReceiverPropertyChange(object sender, PropertyChangedEventArgs e)
+        private void UdpReceiverPropertyChange(object sender, PropertyChangedEventArgs e)
         {
             if(e.PropertyName.Equals("IsReceivingCoordinates"))
             {
-                IsReceiving = udpReceiver.IsReceivingCoordinates;
-                //receiveData.CurrentShipCoordinates = udpReceiver.ShipCoordinates;
-                //receiveData.upDateCoordinates(udpReceiver.ShipCoordinates);
+                IsReceiving = _udpReceiver.IsReceivingCoordinates;
             }
-            if(e.PropertyName.Equals("ShipCoordinates"))
+            if (e.PropertyName.Equals("ShipCoordinates"))
             {
-                receiveData.updateCoordinates(udpReceiver.ShipCoordinates);
-
-                //**************Temp***********
-                GlobalVarsTemp.TempCoord = udpReceiver.ShipCoordinates;
+                ReceivedShipCoordinates = _udpReceiver.ShipCoordinates;
             }
 
             //shipCoordinates = udpReceiver.ShipCoordinates;
@@ -82,14 +95,8 @@ namespace UAVImplementation.ControlLayer
         }
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        
 
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
+        
     }
 }

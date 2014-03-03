@@ -409,7 +409,7 @@
             this.txtBoxFocalPointy.Name = "txtBoxFocalPointy";
             this.txtBoxFocalPointy.Size = new System.Drawing.Size(71, 20);
             this.txtBoxFocalPointy.TabIndex = 39;
-            this.txtBoxFocalPointy.Text = "50";
+            this.txtBoxFocalPointy.Text = "100";
             this.txtBoxFocalPointy.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // txtBoxFocalPointz
@@ -418,7 +418,7 @@
             this.txtBoxFocalPointz.Name = "txtBoxFocalPointz";
             this.txtBoxFocalPointz.Size = new System.Drawing.Size(72, 20);
             this.txtBoxFocalPointz.TabIndex = 40;
-            this.txtBoxFocalPointz.Text = "-130";
+            this.txtBoxFocalPointz.Text = "-120";
             this.txtBoxFocalPointz.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // btnXplus10
@@ -577,7 +577,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1048, 652);
+            this.ClientSize = new System.Drawing.Size(1048, 683);
             this.Controls.Add(this.txtBoxMegaPixels);
             this.Controls.Add(this.label22);
             this.Controls.Add(this.panel1);

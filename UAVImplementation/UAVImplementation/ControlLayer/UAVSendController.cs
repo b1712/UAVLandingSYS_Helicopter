@@ -1,37 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UAVImplementation.ServiceLayer;
+﻿using UAVImplementation.ServiceLayer;
 using UAVImplementation.BusinessLayer;
 using System.Threading;
 
 namespace UAVImplementation.ControlLayer
 {
-    public class UAVSendController
+    public class UavSendController
     {
-        private string ipAddress;
-        private int port;
+        private readonly string _ipAddress;
+        private readonly int _port;
 
-        UDPSender udpSender;
+        UdpSender _udpSender;
 
-        public UAVSendController(string ipAddress, int port)
+        public UavSendController(string ipAddress, int port)
         {
-            this.ipAddress = ipAddress;
-            this.port = port;
+            _ipAddress = ipAddress;
+            _port = port;
         }
 
-        public void startUDPSender()
+        public void StartUdpSender()
         {
-            udpSender = new UDPSender(ipAddress, port);
+            var sender = new Thread(SenderThread);
+            //sender.IsBackground = true;
+            sender.Start();
+            
+        }
 
-            //if (!FlightStatusSingleton.getInstance().IsTouchdown)
-            while (!FlightStatusSingleton.getInstance().IsTouchdown)
-            {
-                //****************TEMP********************
-                // Parameter temp.
-                udpSender.startSender(GlobalVarsTemp.TempCoord);
-            }
+        public void SenderThread()
+        {
+            //_udpSender = new UdpSender(_ipAddress, _port);
+
+            //while (!FlightStatusSingleton.GetInstance().IsTouchdown)
+            //{
+            //    //****************TEMP********************
+            //    // Parameter temp.
+            //    //_udpSender.StartSender(GlobalVarsTemp.TempCoord);
+            //}
         }
     }
 }

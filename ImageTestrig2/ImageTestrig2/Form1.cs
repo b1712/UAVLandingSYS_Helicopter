@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Threading;
 
 namespace ImageTestrig2
 {
@@ -22,30 +17,20 @@ namespace ImageTestrig2
         private double focalLengthmm;
         private double focalLengthmetres;
         private string textFile;
-        private List<double> listOfWorldCoordinates = new List<double>();
-        private List<double> listOfImageCoordinates = new List<double>();
-        private List<Point> listOfPixels = new List<Point>();
-        private int coordinateCount = 0;
-        private int masterIndex = 0;
+        private readonly List<double> listOfWorldCoordinates = new List<double>();
+        private readonly List<double> listOfImageCoordinates = new List<double>();
+        private readonly List<Point> listOfPixels = new List<Point>();
+        private int coordinateCount;
+        private int masterIndex;
         private string currentCoordinateAsString = "";
         private double focalPointx;
         private double focalPointy;
         private double focalPointz;
-        private double point12x;
-        private double point12y;
-        private double point12z;
-        private double point4x;
-        private double point4y;
-        private double point4z;
-        private double point8x;
-        private double point8y;
-        private double point8z;
         private double dx;
         private double dy;
         private const int numberOfPoints = 3;
-        private const int numberOfImageCoords = 2;
 
-        Bitmap map = new Bitmap(2160, 1440);
+        readonly Bitmap map = new Bitmap(2160, 1440);
         Point point;
         const int convertMetreTo_mm = 1000;
         
@@ -71,7 +56,7 @@ namespace ImageTestrig2
 
         private void btnImport_Click(object sender, EventArgs e)
         {
-            textFile = System.IO.File.ReadAllText(@"C:\Users\Brian\Desktop\ImageTestrig2\TestData_Ship\SeaState6_Zero_Degrees_Full.txt");
+            textFile = System.IO.File.ReadAllText(@"C:\Users\Brian\Documents\GitHub\UAVLandingSYS_Helicopter\ImageTestrig2\TestData_Ship\SeaState6_Zero_Degrees_Full.txt");
             
             masterIndex = 0;
         }
@@ -107,17 +92,6 @@ namespace ImageTestrig2
             txt8x.Text = listOfWorldCoordinates[6].ToString();
             txt8y.Text = listOfWorldCoordinates[7].ToString();
             txt8z.Text = listOfWorldCoordinates[8].ToString();
-
-            point12x = listOfWorldCoordinates[0];
-            point12y = listOfWorldCoordinates[1];
-            point12z = listOfWorldCoordinates[2];
-            point4x = listOfWorldCoordinates[3];
-            point4y = listOfWorldCoordinates[4];
-            point4z = listOfWorldCoordinates[5];
-            point8x = listOfWorldCoordinates[6];
-            point8y = listOfWorldCoordinates[7];
-            point8z = listOfWorldCoordinates[8];
-
         }
 
         private void btnFoV_Click(object sender, EventArgs e)
@@ -136,13 +110,6 @@ namespace ImageTestrig2
 
             txtBoxFoVWidthAngle.Text = fovAngleWidth.ToString();
             txtBoxFoVHeightAngle.Text = fovAngleHeight.ToString();
-        }
-
-        private double degreeToRadian(double degrees)
-        {
-            double radians = degrees * Math.PI / 180;
-
-            return radians;
         }
 
         private double radiansToDegrees(double radians)
@@ -222,11 +189,9 @@ namespace ImageTestrig2
 
         private void btnCalcImageCoord_Click(object sender, EventArgs e)
         {
-            double t = 0;
-
             for (int i = 0; i < numberOfPoints; i++)
             {
-                t = calculateParameterT(focalPointy, listOfWorldCoordinates[1 + (i * 3)]);
+                double t = calculateParameterT(focalPointy, listOfWorldCoordinates[1 + (i * 3)]);
 
                 mapCoordinatesToPixels(
                     (calculateImageCoordinate(listOfWorldCoordinates[0 + (i * 3)], focalPointx, t)),
@@ -271,10 +236,10 @@ namespace ImageTestrig2
             // centre of image in world coordinates (m) = UAVx, UAVz
             point = new Point();
 
-            double pixelPer_mm = 1080/18; // map mm to pixel
+            const double pixelPerMm = 1080/18; // map mm to pixel
 
-            dx = (worldx - focalPointx) * convertMetreTo_mm * pixelPer_mm;
-            dy = (worldz - focalPointz) * convertMetreTo_mm * pixelPer_mm;
+            dx = (worldx - focalPointx) * convertMetreTo_mm * pixelPerMm;
+            dy = (worldz - focalPointz) * convertMetreTo_mm * pixelPerMm;
 
             point.X = Convert.ToInt32(dx) + 1080;
             point.Y = Convert.ToInt32(-dy) + 720; // coordinate to pixel conversion
@@ -288,11 +253,12 @@ namespace ImageTestrig2
                 map.SetPixel(50, 50, Color.White);
                 map.SetPixel(point.X, point.Y, Color.White);
             }
-            
         }
 
         private void btnCalculateSizes_Click(object sender, EventArgs e)
         {
+
+
 
         }
 

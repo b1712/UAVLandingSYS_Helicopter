@@ -1,94 +1,115 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
 using System.ComponentModel;
 
 namespace UAVImplementation.ServiceLayer
 {
-    class UDPReceiver : INotifyPropertyChanged
+    class UdpReceiver : INotifyPropertyChanged
     {
-        private Socket udpSocket;
-        private byte[] buffer;
-        private int port;
+        #region fields
 
-        private float[] floatArray = new float[1];
+        private Socket _udpSocket;
+        private byte[] _buffer;
+        private readonly int _port;
+        private float[] _floatArray = new float[18];
+        private double[] _shipCoordinates = new double[18];
+        private readonly double[] _tempArray = new double[18];
+        private bool _isReceivingCoordinates;
 
-        private float[] shipCoordinates = new float[1];
+        #endregion
 
-        private bool isReceivingCoordinates;
+        #region Class Properties
 
-        public float[] ShipCoordinates
+        public double[] ShipCoordinates
         {
-            get { return shipCoordinates; }
+            get { return _shipCoordinates; }
             set
             {
-                this.shipCoordinates = value;
+                _shipCoordinates = value;
                 NotifyPropertyChanged("ShipCoordinates");
             }
         }
 
-
         public bool IsReceivingCoordinates
         {
-            get { return isReceivingCoordinates; }
+            get { return _isReceivingCoordinates; }
             set 
             { 
-                this.isReceivingCoordinates = value;
+                _isReceivingCoordinates = value;
                 NotifyPropertyChanged("IsReceivingCoordinates");
             }
         }
 
+        #endregion
+
+        #region Handler and Notify Method
+
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public UDPReceiver(int port)
+        private void NotifyPropertyChanged(string propertyName)
         {
-            this.port = port;
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        } 
+
+        #endregion
+
+        public UdpReceiver(int port)
+        {
+            _port = port;
         }
 
-        public void startConnection()
+        public void StartConnection()
         {
-            //floatArray[0] = -130.0f;
             try
             {
-                udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                udpSocket.Bind(new IPEndPoint(IPAddress.Any, port));
-                buffer = new byte[1024];
+                _udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                _udpSocket.Bind(new IPEndPoint(IPAddress.Any, _port));
+                _buffer = new byte[1024];
 
-                EndPoint newClientEP = new IPEndPoint(IPAddress.Any, 0);
-                udpSocket.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None,
-                                    ref newClientEP, doReceiveCoordinates, udpSocket);
+                EndPoint newClientEp = new IPEndPoint(IPAddress.Any, 0);
+                _udpSocket.BeginReceiveFrom(_buffer, 0, _buffer.Length, SocketFlags.None,
+                                    ref newClientEp, DoReceiveCoordinates, _udpSocket);
+            }
+            catch (SocketException socketEx)
+            {
+                Console.WriteLine("A socket error in Receiver startup: " + socketEx.Message);
+                throw;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error in Receiver startup: " + ex.Message);
+                Console.WriteLine("A general error in Receiver startup: " + ex.Message);
+                throw;
             }
         }
 
-        private void doReceiveCoordinates(IAsyncResult iAsynResult)
+        private void DoReceiveCoordinates(IAsyncResult iAsynResult)
         {
             try
             {
-                Socket receiveSocket = (Socket)iAsynResult.AsyncState;
+                var receiveSocket = (Socket)iAsynResult.AsyncState;
                 EndPoint endPoint = new IPEndPoint(IPAddress.Any, 0);
 
-                int dataSize = receiveSocket.EndReceiveFrom(iAsynResult, ref endPoint);
+                var dataSize = receiveSocket.EndReceiveFrom(iAsynResult, ref endPoint);
 
-                byte[] data = new byte[dataSize];
-                Array.Copy(buffer, data, dataSize);
+                var data = new byte[dataSize];
+                Array.Copy(_buffer, data, dataSize);
 
                 EndPoint newEndPoint = new IPEndPoint(IPAddress.Any, 0);
-                udpSocket.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, 
-                                    ref newEndPoint, doReceiveCoordinates, udpSocket);
+                _udpSocket.BeginReceiveFrom(_buffer, 0, _buffer.Length, SocketFlags.None, 
+                                    ref newEndPoint, DoReceiveCoordinates, _udpSocket);
 
-                floatArray = new float[data.Length / sizeof(float)];
-                int index = 0;
-                for (int i = 0; i < floatArray.Length; i++)
+                _floatArray = new float[data.Length / sizeof(float)];
+
+                var index = 0;
+
+                for (var i = 0; i < _floatArray.Length; i++)
                 {
-                    floatArray[i] = BitConverter.ToSingle(data, index);
+                    _floatArray[i] = BitConverter.ToSingle(data, index);
                     index += sizeof(float);
                 }
 
@@ -97,21 +118,26 @@ namespace UAVImplementation.ServiceLayer
                     IsReceivingCoordinates = true;
                 }
 
-                ShipCoordinates = floatArray;
+                for (var i = 0; i < _floatArray.Length; i++)
+                {
+                    _tempArray[i] = Convert.ToDouble(_floatArray[i]);
+                }
+                
+                // tempArray is used here because any partial changes to the ShipCoordinates array 
+                // will fire the Property Changed event.
 
+                ShipCoordinates = _tempArray;
             }
-            catch (ObjectDisposedException ex)
+            catch (ObjectDisposedException objectEx)
             {
-                Console.WriteLine("Error with Receive method: " + ex.Message);
+                Console.WriteLine("An error with Receive method: " + objectEx.Message);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("A general error with Receive method: " + ex.Message);
+                throw;
             }
         }
-
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        } 
     }
 }

@@ -1,3 +1,4 @@
 <Modules>
   <Module PersistentId="9D526B5F-202F-4BFA-90B9-5029E9D1425A" ModuleId="UAVImplementation" />
+  <Module PersistentId="E080B95D-EA75-4FB7-926E-E1254711FDB0" ModuleId="TestBusinessLayer" />
 </Modules>

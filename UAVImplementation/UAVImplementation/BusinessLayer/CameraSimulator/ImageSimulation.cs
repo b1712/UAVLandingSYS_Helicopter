@@ -25,6 +25,7 @@ namespace UAVImplementation.BusinessLayer.CameraSimulator
         private const int NumberOfUavCoordinates = 3;
         private const int NumberOfShip3DPoint = 6;
         private double _pixelPerMm;
+        private double _tParameter;
         private double _focalLengthmetres;
         private const double ConvertMetreToMm = 1000;
         private const double ConvertMmToMeters = 0.001;
@@ -38,10 +39,9 @@ namespace UAVImplementation.BusinessLayer.CameraSimulator
             _ccdWidthMm = cameraSetup[1];
             _ccdHeightMm = cameraSetup[2];
             _megaPixel = cameraSetup[3];
-            StartSimulation();
         }
 
-        private void StartSimulation()
+        public void StartSimulation()
         {
             GetCalculationData();
             
@@ -140,13 +140,13 @@ namespace UAVImplementation.BusinessLayer.CameraSimulator
                 var nextZ = 2 + (i*3);
                 
                 // The second double in the focal point array is the 'y' coordinate
-                var t = CalculateParameterT(_currentUavFocalPointCoordinates[1], 
+                _tParameter = CalculateParameterT(_currentUavFocalPointCoordinates[1], 
                                                _currentShipCoordinates[nextY]);
 
                 var mapX = CalculateImageCoordinate(_currentShipCoordinates[nextX],
-                                                    _currentUavFocalPointCoordinates[0], t);
-                var mapZ = CalculateImageCoordinate(_currentShipCoordinates[nextZ], 
-                                                    _currentUavFocalPointCoordinates[2], t);
+                                                    _currentUavFocalPointCoordinates[0], _tParameter);
+                var mapZ = CalculateImageCoordinate(_currentShipCoordinates[nextZ],
+                                                    _currentUavFocalPointCoordinates[2], _tParameter);
 
                 MapCoordinatesToPixels(mapX, mapZ);
             }

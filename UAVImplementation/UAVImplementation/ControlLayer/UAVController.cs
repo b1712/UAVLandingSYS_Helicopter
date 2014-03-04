@@ -11,6 +11,7 @@ namespace UAVImplementation.ControlLayer
     {
         private readonly double[] _startPoint;
         private volatile InsSimulation _insSimulation;
+        private ImageSimulation _imageSimulation;
         private double[] _cameraSetup;
 
         public UavController(double[] startPoint)
@@ -69,8 +70,8 @@ namespace UAVImplementation.ControlLayer
         {
             try
             {
-                Console.WriteLine("test 4");
-                new ImageSimulation(_cameraSetup);
+                _imageSimulation = new ImageSimulation(_cameraSetup);
+                _imageSimulation.StartSimulation();
             }
             catch (Exception ex)
             {

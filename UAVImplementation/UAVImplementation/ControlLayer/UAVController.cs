@@ -58,6 +58,8 @@ namespace UAVImplementation.ControlLayer
                 _insSimulation = new InsSimulation();
                 ImageDataSingleton.GetInstance().SetupInsListener(_insSimulation);
                 _insSimulation.PostCoordinates(_startPoint);
+                //*****************TEMP***************
+                _insSimulation.UpdateCoord();
             }
             catch (Exception ex)
             {

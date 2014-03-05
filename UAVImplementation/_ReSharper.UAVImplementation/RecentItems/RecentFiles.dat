@@ -3,19 +3,19 @@
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:Properties/f:AssemblyInfo.cs" caret="0" fromTop="0" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ServiceLayer/f:UDPSender.cs" caret="868" fromTop="16" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:PresentationLayer/f:Program.cs" caret="13" fromTop="0" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ControlLayer/f:UAVSendController.cs" caret="459" fromTop="6" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ControlLayer/f:UAVRecieveController.cs" caret="1757" fromTop="50" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ServiceLayer/f:UDPReceiver.cs" caret="3678" fromTop="6" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:PresentationLayer/f:UAV_UI.Designer.cs" caret="19888" fromTop="15" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:ImageProcessor/f:ImageProcessorSimulation.cs" caret="475" fromTop="16" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:NavigationUnit/f:ReferenceAdaptiveControlUnit.cs" caret="288" fromTop="11" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/f:FlightStatusSingleton.cs" caret="1628" fromTop="27" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ControlLayer/f:UAVController.cs" caret="2437" fromTop="19" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:PresentationLayer/f:UAV_UI.cs" caret="2373" fromTop="18" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:INSSimulator/f:InsSimulation.cs" caret="45" fromTop="2" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:CameraSimulator/f:ImageDataSingleton.cs" caret="1389" fromTop="27" />
-    <File id="E080B95D-EA75-4FB7-926E-E1254711FDB0/f:TestImageSimulation.cs" caret="5635" fromTop="30" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:CameraSimulator/f:ImageSimulation.cs" caret="6818" fromTop="0" />
+    <File id="E080B95D-EA75-4FB7-926E-E1254711FDB0/f:TestImageSimulation.cs" caret="1028" fromTop="0" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ControlLayer/f:UAVSendController.cs" caret="306" fromTop="11" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:CameraSimulator/f:ImageSimulation.cs" caret="1899" fromTop="15" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ControlLayer/f:UAVController.cs" caret="2121" fromTop="21" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:CameraSimulator/f:ImageDataSingleton.cs" caret="1848" fromTop="17" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:INSSimulator/f:InsSimulation.cs" caret="1892" fromTop="20" />
   </RecentFiles>
   <RecentEdits>
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:PresentationLayer/f:UAV_UI.Designer.cs" caret="19888" fromTop="15" />
@@ -30,9 +30,9 @@
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/f:FlightStatusSingleton.cs" caret="1629" fromTop="20" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:NavigationUnit/f:ReferenceAdaptiveControlUnit.cs" caret="288" fromTop="11" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:PresentationLayer/f:UAV_UI.cs" caret="2231" fromTop="17" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:INSSimulator/f:InsSimulation.cs" caret="1077" fromTop="12" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ControlLayer/f:UAVController.cs" caret="2437" fromTop="19" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:CameraSimulator/f:ImageSimulation.cs" caret="6380" fromTop="18" />
-    <File id="E080B95D-EA75-4FB7-926E-E1254711FDB0/f:TestImageSimulation.cs" caret="5635" fromTop="15" />
+    <File id="E080B95D-EA75-4FB7-926E-E1254711FDB0/f:TestImageSimulation.cs" caret="1044" fromTop="17" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:CameraSimulator/f:ImageSimulation.cs" caret="9525" fromTop="21" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ControlLayer/f:UAVController.cs" caret="2121" fromTop="21" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:INSSimulator/f:InsSimulation.cs" caret="1892" fromTop="20" />
   </RecentEdits>
 </RecentFiles>

@@ -1,13 +1,5 @@
-2014/03/03-22:15:58.409 efc Recovering log #12
-2014/03/03-22:15:58.410 efc Level-0 table #14: started
-2014/03/03-22:15:58.544 efc Level-0 table #14: 40524 bytes OK
-2014/03/03-22:15:58.769 efc Delete type=0 #12
-2014/03/03-22:15:58.771 efc Delete type=3 #10
-2014/03/03-22:15:58.773 a54 Compacting 4@0 + 0@1 files
-2014/03/03-22:15:58.981 a54 Generated table #16: 97 keys, 12792 bytes
-2014/03/03-22:15:58.981 a54 Compacted 4@0 + 0@1 files => 12792 bytes
-2014/03/03-22:15:59.015 a54 Delete type=2 #5
-2014/03/03-22:15:59.016 a54 Delete type=2 #8
-2014/03/03-22:15:59.018 a54 Delete type=2 #11
-2014/03/03-22:15:59.021 a54 Delete type=2 #14
-2014/03/03-22:15:59.024 a54 compacted to: files[ 0 1 0 0 0 0 0 ]
+2014/03/05-00:44:39.941 1478 Recovering log #19
+2014/03/05-00:44:39.941 1478 Level-0 table #21: started
+2014/03/05-00:44:39.982 1478 Level-0 table #21: 13333 bytes OK
+2014/03/05-00:44:40.039 1478 Delete type=0 #19
+2014/03/05-00:44:40.040 1478 Delete type=3 #17

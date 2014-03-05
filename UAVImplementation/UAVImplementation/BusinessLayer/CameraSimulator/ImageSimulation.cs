@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Collections.Generic;
 using System.Threading;
+using System.Drawing.Imaging;
 
 namespace UAVImplementation.BusinessLayer.CameraSimulator
 {
@@ -30,6 +31,11 @@ namespace UAVImplementation.BusinessLayer.CameraSimulator
         private const double ConvertMetreToMm = 1000;
         private const double ConvertMmToMeters = 0.001;
         private Point _point;
+        private Bitmap _image;
+
+        //**************Temp*************
+        private int _tempCounter = 0;
+        int i = 0;
 
         #endregion
         
@@ -66,8 +72,12 @@ namespace UAVImplementation.BusinessLayer.CameraSimulator
 
                     if (_currentShipCoordinates != null && _currentUavFocalPointCoordinates != null)
                     {
-                        GenerateCurrentImage();
+                        GenerateCurrentImageCoordinates();
+
+                        //***********************Temp******************
                         Console.WriteLine("*****************************");
+
+                        ConstructCurrentImage();
                     }
                 }
             }
@@ -88,7 +98,7 @@ namespace UAVImplementation.BusinessLayer.CameraSimulator
             _halfHeightInPixels = _heightInPixels/2;
         }
 
-        private void GenerateCurrentImage()
+        private void GenerateCurrentImageCoordinates()
         {
             try
             {
@@ -166,11 +176,11 @@ namespace UAVImplementation.BusinessLayer.CameraSimulator
             return coordinate;
         }
 
-        private void MapCoordinatesToPixels(double worldx, double worldz)
+        private void MapCoordinatesToPixels(double coordinateXMetres, double coordinateZMetres)
         {
 
-            var dx = (worldx - _currentUavFocalPointCoordinates[0]) * ConvertMetreToMm * _pixelPerMm;
-            var dy = (worldz - _currentUavFocalPointCoordinates[2]) * ConvertMetreToMm * _pixelPerMm;
+            var dx = (coordinateXMetres - _currentUavFocalPointCoordinates[0]) * ConvertMetreToMm * _pixelPerMm;
+            var dy = (coordinateZMetres - _currentUavFocalPointCoordinates[2]) * ConvertMetreToMm * _pixelPerMm;
 
             _point.X = Convert.ToInt32(dx) + (_halfWidthInPixels);
             _point.Y = Convert.ToInt32(-dy) + (_halfHeightInPixels); // coordinate to pixel conversion
@@ -180,8 +190,55 @@ namespace UAVImplementation.BusinessLayer.CameraSimulator
                 _point.Y >= 0 && _point.Y < _heightInPixels)
             {
                 _listOfPositiveImagePixels.Add(_point);
+
+                //****************TEMP******************
                 Console.WriteLine(_point.X + ", " + _point.Y);
             }
+        }
+
+        private void ConstructCurrentImage()
+        {
+            _image = new Bitmap(_widthInPixels, _heightInPixels);
+
+            var bmData = _image.LockBits(new Rectangle(0, 0, _widthInPixels, _heightInPixels), 
+                ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
+
+            var stride = bmData.Stride;
+            System.IntPtr scan0 = bmData.Scan0;
+            System.IntPtr scan1 = bmData.Scan0;
+
+            unsafe
+            {
+
+                byte* pointer = (byte*)(void*)scan0;
+                byte* pointerAssign = (byte*)(void*)scan1;
+
+                for (int y = 0; y < _heightInPixels; ++y)
+                {
+                    for (int x = 0; x < _widthInPixels; ++x)
+                    {
+                        pointer[0] = 0;
+                        pointer++;
+                    }
+
+                }
+
+                foreach(var nextPoint in _listOfPositiveImagePixels)
+                {
+                    pointerAssign[nextPoint.Y*stride + nextPoint.X] = 255;
+                }
+            }
+
+            _image.UnlockBits(bmData);
+
+            //****************Temp************************
+            if ((_tempCounter < 100) && ((i % 10) == 0))
+            {
+                _image.Save(@"C:\testImages\image(" + _tempCounter + ").jpg");
+                
+                _tempCounter++;
+            }
+            i++;
         }
 
         private void DoClearData()

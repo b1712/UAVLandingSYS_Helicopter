@@ -10,6 +10,9 @@ namespace UAVImplementation.BusinessLayer.INSSimulator
 
         private double[] _currentUavCoordinates;
 
+        //************TEMP**********
+        private bool _running;
+
         #endregion
 
         #region Class Properties
@@ -48,11 +51,31 @@ namespace UAVImplementation.BusinessLayer.INSSimulator
             //Thread.Sleep(3000);
             //Console.WriteLine("I am the InsSim 3000");
             //FlightStatusSingleton.GetInstance().IsTouchdown = true;
+
+            
+
         }
 
         public void PostCoordinates(double[] currentCoordinates)
         {
             CurrentUavCoordinates = currentCoordinates;
+            _running = true;
         }
+
+        //*************Temp*******************
+        public void UpdateCoord()
+        {
+            while (!FlightStatusSingleton.GetInstance().IsTouchdown)
+            {
+                if (_running == true)
+                {
+                    Thread.Sleep(300);
+                    double[] temp = CurrentUavCoordinates;
+                    temp[1]--;
+                    CurrentUavCoordinates = temp;
+                }
+            }
+        }
+        
     }
 }

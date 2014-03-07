@@ -52,14 +52,14 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.txtBoxFocalLength = new System.Windows.Forms.TextBox();
-            this.txtBoxCcdWidth = new System.Windows.Forms.TextBox();
-            this.txtBoxCcdHeight = new System.Windows.Forms.TextBox();
             this.txtBoxMegapixels = new System.Windows.Forms.TextBox();
+            this.txtBoxCcdHeight = new System.Windows.Forms.TextBox();
+            this.txtBoxCcdWidth = new System.Windows.Forms.TextBox();
+            this.txtBoxFocalLength = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -235,7 +235,7 @@
             this.txtBoxFocalZ.Name = "txtBoxFocalZ";
             this.txtBoxFocalZ.Size = new System.Drawing.Size(40, 20);
             this.txtBoxFocalZ.TabIndex = 19;
-            this.txtBoxFocalZ.Text = "-120";
+            this.txtBoxFocalZ.Text = "-116";
             // 
             // label8
             // 
@@ -288,32 +288,37 @@
             this.panel1.TabIndex = 23;
             this.panel1.Tag = "";
             // 
-            // label11
+            // txtBoxMegapixels
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(45, 104);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(69, 13);
-            this.label11.TabIndex = 23;
-            this.label11.Text = "Focal Length";
+            this.txtBoxMegapixels.Location = new System.Drawing.Point(122, 179);
+            this.txtBoxMegapixels.Name = "txtBoxMegapixels";
+            this.txtBoxMegapixels.Size = new System.Drawing.Size(43, 20);
+            this.txtBoxMegapixels.TabIndex = 30;
+            this.txtBoxMegapixels.Text = "1";
             // 
-            // label12
+            // txtBoxCcdHeight
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(41, 130);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(73, 13);
-            this.label12.TabIndex = 24;
-            this.label12.Text = "CCD Chip (W)";
+            this.txtBoxCcdHeight.Location = new System.Drawing.Point(122, 153);
+            this.txtBoxCcdHeight.Name = "txtBoxCcdHeight";
+            this.txtBoxCcdHeight.Size = new System.Drawing.Size(43, 20);
+            this.txtBoxCcdHeight.TabIndex = 29;
+            this.txtBoxCcdHeight.Text = "24";
             // 
-            // label13
+            // txtBoxCcdWidth
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(54, 182);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(60, 13);
-            this.label13.TabIndex = 25;
-            this.label13.Text = "Megapixels";
+            this.txtBoxCcdWidth.Location = new System.Drawing.Point(122, 127);
+            this.txtBoxCcdWidth.Name = "txtBoxCcdWidth";
+            this.txtBoxCcdWidth.Size = new System.Drawing.Size(43, 20);
+            this.txtBoxCcdWidth.TabIndex = 28;
+            this.txtBoxCcdWidth.Text = "36";
+            // 
+            // txtBoxFocalLength
+            // 
+            this.txtBoxFocalLength.Location = new System.Drawing.Point(122, 101);
+            this.txtBoxFocalLength.Name = "txtBoxFocalLength";
+            this.txtBoxFocalLength.Size = new System.Drawing.Size(43, 20);
+            this.txtBoxFocalLength.TabIndex = 27;
+            this.txtBoxFocalLength.Text = "30";
             // 
             // label14
             // 
@@ -324,37 +329,32 @@
             this.label14.TabIndex = 26;
             this.label14.Text = "CCD Chip (H)";
             // 
-            // txtBoxFocalLength
+            // label13
             // 
-            this.txtBoxFocalLength.Location = new System.Drawing.Point(122, 101);
-            this.txtBoxFocalLength.Name = "txtBoxFocalLength";
-            this.txtBoxFocalLength.Size = new System.Drawing.Size(43, 20);
-            this.txtBoxFocalLength.TabIndex = 27;
-            this.txtBoxFocalLength.Text = "30";
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(54, 182);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(60, 13);
+            this.label13.TabIndex = 25;
+            this.label13.Text = "Megapixels";
             // 
-            // txtBoxCcdWidth
+            // label12
             // 
-            this.txtBoxCcdWidth.Location = new System.Drawing.Point(122, 127);
-            this.txtBoxCcdWidth.Name = "txtBoxCcdWidth";
-            this.txtBoxCcdWidth.Size = new System.Drawing.Size(43, 20);
-            this.txtBoxCcdWidth.TabIndex = 28;
-            this.txtBoxCcdWidth.Text = "36";
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(41, 130);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(73, 13);
+            this.label12.TabIndex = 24;
+            this.label12.Text = "CCD Chip (W)";
             // 
-            // txtBoxCcdHeight
+            // label11
             // 
-            this.txtBoxCcdHeight.Location = new System.Drawing.Point(122, 153);
-            this.txtBoxCcdHeight.Name = "txtBoxCcdHeight";
-            this.txtBoxCcdHeight.Size = new System.Drawing.Size(43, 20);
-            this.txtBoxCcdHeight.TabIndex = 29;
-            this.txtBoxCcdHeight.Text = "24";
-            // 
-            // txtBoxMegapixels
-            // 
-            this.txtBoxMegapixels.Location = new System.Drawing.Point(122, 179);
-            this.txtBoxMegapixels.Name = "txtBoxMegapixels";
-            this.txtBoxMegapixels.Size = new System.Drawing.Size(43, 20);
-            this.txtBoxMegapixels.TabIndex = 30;
-            this.txtBoxMegapixels.Text = "1";
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(45, 104);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(69, 13);
+            this.label11.TabIndex = 23;
+            this.label11.Text = "Focal Length";
             // 
             // UavUi
             // 

@@ -59,20 +59,24 @@ namespace UAVImplementation.BusinessLayer.INSSimulator
         public void PostCoordinates(double[] currentCoordinates)
         {
             CurrentUavCoordinates = currentCoordinates;
+
+            //*************Temp*******************
             _running = true;
         }
 
         //*************Temp*******************
         public void UpdateCoord()
         {
+            double[] temp = CurrentUavCoordinates;
             while (!FlightStatusSingleton.GetInstance().IsTouchdown)
             {
-                if (_running == true)
+                if (_running == true && temp[1] > 30)
                 {
-                    Thread.Sleep(300);
-                    double[] temp = CurrentUavCoordinates;
+                    Thread.Sleep(400);
+                    
                     temp[1]--;
                     CurrentUavCoordinates = temp;
+                    Console.WriteLine(temp[1].ToString());
                 }
             }
         }

@@ -226,6 +226,10 @@ namespace UAVImplementation.BusinessLayer.CameraSimulator
                 foreach(var nextPoint in _listOfPositiveImagePixels)
                 {
                     pointerAssign[nextPoint.Y*stride + nextPoint.X] = 255;
+                    pointerAssign[nextPoint.Y * stride + nextPoint.X + 1] = 255;
+                    pointerAssign[nextPoint.Y * stride + nextPoint.X - 1] = 255;
+                    pointerAssign[(nextPoint.Y - 1) * stride + nextPoint.X] = 255;
+                    pointerAssign[(nextPoint.Y + 1) * stride + nextPoint.X] = 255;
                 }
             }
 

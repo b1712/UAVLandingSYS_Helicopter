@@ -12,10 +12,10 @@
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:PresentationLayer/f:UAV_UI.cs" caret="2373" fromTop="18" />
     <File id="E080B95D-EA75-4FB7-926E-E1254711FDB0/f:TestImageSimulation.cs" caret="1028" fromTop="0" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ControlLayer/f:UAVSendController.cs" caret="306" fromTop="11" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:CameraSimulator/f:ImageSimulation.cs" caret="1899" fromTop="15" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ControlLayer/f:UAVController.cs" caret="2121" fromTop="21" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:CameraSimulator/f:ImageDataSingleton.cs" caret="1848" fromTop="17" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:INSSimulator/f:InsSimulation.cs" caret="1892" fromTop="20" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:CameraSimulator/f:ImageSimulation.cs" caret="9369" fromTop="28" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:INSSimulator/f:InsSimulation.cs" caret="1956" fromTop="21" />
   </RecentFiles>
   <RecentEdits>
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:PresentationLayer/f:UAV_UI.Designer.cs" caret="19888" fromTop="15" />
@@ -31,8 +31,8 @@
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:NavigationUnit/f:ReferenceAdaptiveControlUnit.cs" caret="288" fromTop="11" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:PresentationLayer/f:UAV_UI.cs" caret="2231" fromTop="17" />
     <File id="E080B95D-EA75-4FB7-926E-E1254711FDB0/f:TestImageSimulation.cs" caret="1044" fromTop="17" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:CameraSimulator/f:ImageSimulation.cs" caret="9525" fromTop="21" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ControlLayer/f:UAVController.cs" caret="2121" fromTop="21" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:INSSimulator/f:InsSimulation.cs" caret="1892" fromTop="20" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:CameraSimulator/f:ImageSimulation.cs" caret="9507" fromTop="26" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:INSSimulator/f:InsSimulation.cs" caret="1956" fromTop="21" />
   </RecentEdits>
 </RecentFiles>

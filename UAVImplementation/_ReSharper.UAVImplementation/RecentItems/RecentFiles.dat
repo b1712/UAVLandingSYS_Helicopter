@@ -3,36 +3,45 @@
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:Properties/f:AssemblyInfo.cs" caret="0" fromTop="0" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ServiceLayer/f:UDPSender.cs" caret="868" fromTop="16" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:PresentationLayer/f:Program.cs" caret="13" fromTop="0" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ControlLayer/f:UAVRecieveController.cs" caret="1757" fromTop="50" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ServiceLayer/f:UDPReceiver.cs" caret="3678" fromTop="6" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:PresentationLayer/f:UAV_UI.Designer.cs" caret="19888" fromTop="15" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:ImageProcessor/f:ImageProcessorSimulation.cs" caret="475" fromTop="16" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:NavigationUnit/f:ReferenceAdaptiveControlUnit.cs" caret="288" fromTop="11" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/f:FlightStatusSingleton.cs" caret="1628" fromTop="27" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:PresentationLayer/f:UAV_UI.cs" caret="2373" fromTop="18" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/f:app.config" caret="0" fromTop="0" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ControlLayer/f:UAVRecieveController.cs" caret="1312" fromTop="13" />
     <File id="E080B95D-EA75-4FB7-926E-E1254711FDB0/f:TestImageSimulation.cs" caret="1028" fromTop="0" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:ImageProcessor/f:ImageCoordinates.cs" caret="542" fromTop="3" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ControlLayer/f:UAVController.cs" caret="3407" fromTop="15" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:CameraSimulator/f:ImageSimulation.cs" caret="4534" fromTop="9" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:CameraSimulator/f:ImageDataSingleton.cs" caret="2790" fromTop="0" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:PresentationLayer/f:UAV_UI.cs" caret="3053" fromTop="15" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:PresentationLayer/f:UAV_UI.Designer.cs" caret="25078" fromTop="15" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ControlLayer/f:UAVSendController.cs" caret="306" fromTop="11" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ControlLayer/f:UAVController.cs" caret="2121" fromTop="21" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:CameraSimulator/f:ImageDataSingleton.cs" caret="1848" fromTop="17" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:CameraSimulator/f:ImageSimulation.cs" caret="9369" fromTop="28" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:INSSimulator/f:InsSimulation.cs" caret="1956" fromTop="21" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:NavigationUnit/f:ApproachPositionOne.cs" caret="481" fromTop="16" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:FlightSimulator/f:UavFlight.cs" caret="290" fromTop="10" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:INSSimulator/f:InsSimulation.cs" caret="463" fromTop="0" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:ImageProcessor/f:ImageProcessSimulation.cs" caret="2121" fromTop="7" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:FlightSimulator/f:Propulsion.cs" caret="1035" fromTop="22" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/f:FlightStatusSingleton.cs" caret="1452" fromTop="22" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:NavigationUnit/f:ReferenceAdaptiveControlUnit.cs" caret="4970" fromTop="6" />
   </RecentFiles>
   <RecentEdits>
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:PresentationLayer/f:UAV_UI.Designer.cs" caret="19888" fromTop="15" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:PresentationLayer/f:UAV_UI.Designer.cs" caret="25078" fromTop="15" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ServiceLayer/f:UDPSender.cs" caret="868" fromTop="16" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:Properties/f:AssemblyInfo.cs" caret="24" fromTop="0" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:PresentationLayer/f:Program.cs" caret="13" fromTop="0" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ControlLayer/f:UAVSendController.cs" caret="1047" fromTop="24" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ServiceLayer/f:UDPReceiver.cs" caret="3678" fromTop="15" />
     <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ControlLayer/f:UAVRecieveController.cs" caret="1684" fromTop="22" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:ImageProcessor/f:ImageProcessorSimulation.cs" caret="823" fromTop="28" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:CameraSimulator/f:ImageDataSingleton.cs" caret="294" fromTop="8" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/f:FlightStatusSingleton.cs" caret="1629" fromTop="20" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:NavigationUnit/f:ReferenceAdaptiveControlUnit.cs" caret="288" fromTop="11" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:PresentationLayer/f:UAV_UI.cs" caret="2231" fromTop="17" />
     <File id="E080B95D-EA75-4FB7-926E-E1254711FDB0/f:TestImageSimulation.cs" caret="1044" fromTop="17" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ControlLayer/f:UAVController.cs" caret="2121" fromTop="21" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:CameraSimulator/f:ImageSimulation.cs" caret="9507" fromTop="26" />
-    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:INSSimulator/f:InsSimulation.cs" caret="1956" fromTop="21" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:PresentationLayer/f:UAV_UI.cs" caret="6544" fromTop="18" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:ImageProcessor/f:ImageCoordinates.cs" caret="351" fromTop="9" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:INSSimulator/f:InsSimulation.cs" caret="1628" fromTop="9" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:CameraSimulator/f:ImageDataSingleton.cs" caret="3404" fromTop="12" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:CameraSimulator/f:ImageSimulation.cs" caret="4728" fromTop="22" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:ControlLayer/f:UAVController.cs" caret="4293" fromTop="23" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:ImageProcessor/f:ImageProcessSimulation.cs" caret="1287" fromTop="17" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:NavigationUnit/f:ApproachPositionOne.cs" caret="481" fromTop="16" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:FlightSimulator/f:UavFlight.cs" caret="299" fromTop="10" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:FlightSimulator/f:Propulsion.cs" caret="591" fromTop="17" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/f:FlightStatusSingleton.cs" caret="1452" fromTop="22" />
+    <File id="9D526B5F-202F-4BFA-90B9-5029E9D1425A/d:BusinessLayer/d:NavigationUnit/f:ReferenceAdaptiveControlUnit.cs" caret="5110" fromTop="20" />
   </RecentEdits>
 </RecentFiles>

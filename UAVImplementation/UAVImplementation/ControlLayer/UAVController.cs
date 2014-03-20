@@ -12,6 +12,8 @@ namespace UAVImplementation.ControlLayer
         private readonly double[] _startPoint;
         private volatile InsSimulation _insSimulation;
         private ImageSimulation _imageSimulation;
+        private ImageProcessSimulation _imageProcessSimulation;
+        private ReferenceAdaptiveControlUnit _referenceAdaptiveControlUnit;
         private double[] _cameraSetup;
 
         public UavController(double[] startPoint)
@@ -27,6 +29,7 @@ namespace UAVImplementation.ControlLayer
             {
                 var startInsSimulator = new Thread(StartInsAndPassInstance);
                 startInsSimulator.Start();
+
                 var startImageGeneration = new Thread(GenerateImages);
                 startImageGeneration.Start();
 
@@ -58,6 +61,9 @@ namespace UAVImplementation.ControlLayer
                 _insSimulation = new InsSimulation();
                 ImageDataSingleton.GetInstance().SetupInsListener(_insSimulation);
                 _insSimulation.PostCoordinates(_startPoint);
+
+
+
                 //*****************TEMP***************
                 _insSimulation.UpdateCoord();
             }
@@ -73,6 +79,7 @@ namespace UAVImplementation.ControlLayer
             try
             {
                 _imageSimulation = new ImageSimulation(_cameraSetup);
+                ImageDataSingleton.GetInstance().SetupImageSimulationListener(_imageSimulation);
                 _imageSimulation.StartSimulation();
             }
             catch (Exception ex)
@@ -84,7 +91,17 @@ namespace UAVImplementation.ControlLayer
 
         private void ProcessImages()
         {
-            new ImageProcessorSimulation();
+            try
+            {
+                _imageProcessSimulation = new ImageProcessSimulation();
+                ImageDataSingleton.GetInstance().SetupImageProcessorListener(_imageProcessSimulation);
+                _imageProcessSimulation.StartProcessor();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An Error occured in " + ex.TargetSite + "..." + ex.Message);
+                throw;
+            }
         }
 
         //private void SetupInsHandler()
@@ -102,15 +119,15 @@ namespace UAVImplementation.ControlLayer
 
         private void StartNavigation()
         {
-            //try
-            //{
+            try
+            {
                 new ReferenceAdaptiveControlUnit();
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine("An Error occured in " + ex.TargetSite + "..." + ex.Message);
-            //    throw;
-            //}
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An Error occured in " + ex.TargetSite + "..." + ex.Message);
+                throw;
+            }
         }
     }
 }

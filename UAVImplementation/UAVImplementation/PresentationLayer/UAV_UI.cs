@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -17,7 +18,7 @@ namespace UAVImplementation.PresentationLayer
         private UavController _uavController;
         private FlightStatusSingleton _flightStatus;
         private readonly double[] _uavStartPoint = new double[3];
-        private double[] _cameraSetup = new double[4]; 
+        private readonly double[] _cameraSetup = new double[4];
         //private double _focalLength;
         //private double _ccdWidth;
         //private double _ccdHeight;
@@ -101,6 +102,14 @@ namespace UAVImplementation.PresentationLayer
                     UpdateUiFlightStatusLanded();
                 }
             }
+            else if (e.PropertyName.Equals("IsPrimaryTargetAcquired"))
+            {
+                UpdateUiPrimaryTargetAcquired(FlightStatusSingleton.GetInstance().IsPrimaryTargetAcquired);
+            }
+            else if (e.PropertyName.Equals("IsSecondaryTargetAcquired"))
+            {
+                UpdateUiSecondaryTargetAcquired(FlightStatusSingleton.GetInstance().IsSecondaryTargetAcquired);
+            }
         }
 
         public delegate void UpdateTextCallback(string message);
@@ -128,11 +137,62 @@ namespace UAVImplementation.PresentationLayer
             txtBoxFlightStatus.Text = message;
             txtBoxFlightStatus.BackColor = Color.LightGreen;
         }
+        
+        private void UpdateUiPrimaryTargetAcquired(bool isAcquired)
+        {
+            var message = isAcquired ? "Yes..." : "No...";
+            
+            txtBoxFlightStatus.Invoke(new UpdateTextCallback(UpdatePrimaryTargetTxtBox),
+                    new object[] { message });
+        }
+
+        private void UpdatePrimaryTargetTxtBox(string message)
+        {
+            txtBoxPrimaryTarget.Text = message;
+
+            txtBoxPrimaryTarget.BackColor = message.Equals("Yes...") ? Color.LightGreen : Color.Pink;
+        }
+
+        private void UpdateUiSecondaryTargetAcquired(bool isAcquired)
+        {
+            var message = isAcquired ? "Yes..." : "No...";
+
+            txtBoxFlightStatus.Invoke(new UpdateTextCallback(UpdateSecondaryTargetTxtBox),
+                    new object[] { message });
+        }
+
+        private void UpdateSecondaryTargetTxtBox(string message)
+        {
+            txtBoxSecondaryTarget.Text = message;
+
+            txtBoxSecondaryTarget.BackColor = message.Equals("Yes...") ? Color.LightGreen : Color.Pink;
+        }
+
 
         //********************TEMP********************
         private void BtnTempClick(object sender, EventArgs e)
         {
             FlightStatusSingleton.GetInstance().IsTouchdown = true;
+        }
+
+        private void PrimaryOnClick(object sender, EventArgs e)
+        {
+            FlightStatusSingleton.GetInstance().IsPrimaryTargetAcquired = true;
+        }
+
+        private void PrimaryOffClick(object sender, EventArgs e)
+        {
+            FlightStatusSingleton.GetInstance().IsPrimaryTargetAcquired = false;
+        }
+
+        private void SecondaryOnClick(object sender, EventArgs e)
+        {
+            FlightStatusSingleton.GetInstance().IsSecondaryTargetAcquired = true;
+        }
+
+        private void SecondaryOffClick(object sender, EventArgs e)
+        {
+            FlightStatusSingleton.GetInstance().IsSecondaryTargetAcquired = false;
         }
 
     }

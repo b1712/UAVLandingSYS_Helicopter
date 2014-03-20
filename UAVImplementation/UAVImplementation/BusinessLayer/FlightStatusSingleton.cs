@@ -9,6 +9,9 @@ namespace UAVImplementation.BusinessLayer
         private volatile static FlightStatusSingleton _uniqueInstance = new FlightStatusSingleton();
         private static readonly object InstanceLocker = new object();
         private bool _isTouchdown;
+        private bool _isPrimaryTargetAcquired;
+        private bool _isSecondaryTargetAcquired;
+        private bool _isShipIntercepted;
 
         #endregion
 
@@ -22,6 +25,32 @@ namespace UAVImplementation.BusinessLayer
                 _isTouchdown = value;
                 NotifyPropertyChanged("IsTouchdown");
             }
+        }
+
+        public bool IsPrimaryTargetAcquired
+        {
+            get { return _isPrimaryTargetAcquired; }
+            set
+            {
+                _isPrimaryTargetAcquired = value;
+                NotifyPropertyChanged("IsPrimaryTargetAcquired");
+            }
+        }
+
+        public bool IsSecondaryTargetAcquired
+        {
+            get { return _isSecondaryTargetAcquired; }
+            set
+            {
+                _isSecondaryTargetAcquired = value;
+                NotifyPropertyChanged("IsSecondaryTargetAcquired");
+            }
+        }
+
+        public bool IsShipIntercepted
+        {
+            get { return _isShipIntercepted; }
+            set { _isShipIntercepted = value; }
         }
 
         #endregion
@@ -43,6 +72,8 @@ namespace UAVImplementation.BusinessLayer
         private FlightStatusSingleton()
         {
             _isTouchdown = false;
+            _isPrimaryTargetAcquired = false;
+            _isSecondaryTargetAcquired = false;
         }
 
         public static FlightStatusSingleton GetInstance()

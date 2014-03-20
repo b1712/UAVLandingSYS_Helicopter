@@ -1,6 +1,9 @@
-﻿using UAVImplementation.ControlLayer;
+﻿using System.Collections.Generic;
+using System.Drawing;
+using UAVImplementation.ControlLayer;
 using System.ComponentModel;
 using UAVImplementation.BusinessLayer.INSSimulator;
+using UAVImplementation.BusinessLayer.ImageProcessor;
 using System;
 using System.Threading;
 
@@ -15,6 +18,8 @@ namespace UAVImplementation.BusinessLayer.CameraSimulator
 
         private UavRecieveController _receiverController;
         private InsSimulation _insSimulation;
+        private ImageSimulation _imageSimulation;
+        private ImageProcessSimulation _imageProcessSimulation;
 
         #endregion
 
@@ -24,6 +29,12 @@ namespace UAVImplementation.BusinessLayer.CameraSimulator
         public double[] CurrentUavCoordinates { get; set; }
         public bool IsShipCoordinatesReceived { get; set; }
         public bool IsUavCoordinatesReceived { get; set; }
+        public bool IsImageCoordinatesReceived { get; set; }
+        public bool IsCurrentImageReceived { get; set; }
+        public Bitmap CurrentImage { get; set; }
+        
+        // Used in lieu of image processor
+        public List<Point> ListOfImageCoordinates { get; set; }
 
         #endregion
 
@@ -58,7 +69,20 @@ namespace UAVImplementation.BusinessLayer.CameraSimulator
             _insSimulation = insSimulation;
             _insSimulation.PropertyChanged += UavCoordinatesPropertyChanged;
         }
-        
+
+        public void SetupImageSimulationListener(ImageSimulation imageSimulation)
+        {
+            _imageSimulation = imageSimulation;
+            _imageSimulation.PropertyChanged += ImageSimulationPropertyChanged;
+        }
+
+        public void SetupImageProcessorListener(ImageProcessSimulation imageProcessSimulation)
+        {
+            _imageProcessSimulation = imageProcessSimulation;
+            _imageProcessSimulation.PropertyChanged += ImageProcessorPropertyChanged;
+        }
+
+
         private void ShipCoordinatesPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName.Equals("ReceivedShipCoordinates"))
@@ -74,6 +98,24 @@ namespace UAVImplementation.BusinessLayer.CameraSimulator
             {
                 CurrentUavCoordinates = _insSimulation.CurrentUavCoordinates;
                 IsUavCoordinatesReceived = true;
+            }
+        }
+
+        private void ImageSimulationPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName.Equals("CurrentImage"))
+            {
+                CurrentImage = _imageSimulation.CurrentImage;
+                IsCurrentImageReceived = true;
+            }
+        }
+
+        private void ImageProcessorPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName.Equals("CoordinatePointsList"))
+            {
+                ListOfImageCoordinates = _imageProcessSimulation.CoordinatePointsList;
+                IsImageCoordinatesReceived = true;
             }
         }
     }

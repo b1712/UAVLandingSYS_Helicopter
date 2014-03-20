@@ -1,18 +1,20 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Threading;
 using System.Drawing.Imaging;
+using System.Diagnostics;
 
 namespace UAVImplementation.BusinessLayer.CameraSimulator
 {
-    public class ImageSimulation
+    public class ImageSimulation : INotifyPropertyChanged
     {
         #region fields
 
         private double[] _currentShipCoordinates = new double[18];
         private double[] _currentUavFocalPointCoordinates = new double[3];
-        private readonly List<Point> _listOfPositiveImagePixels = new List<Point>();
+        private List<Point> _listOfPositiveImagePixels = new List<Point>();
         private readonly double _focalLengthMm;
         private readonly double _ccdWidthMm;
         private readonly double _ccdHeightMm;
@@ -31,31 +33,70 @@ namespace UAVImplementation.BusinessLayer.CameraSimulator
         private const double ConvertMetreToMm = 1000;
         private const double ConvertMmToMeters = 0.001;
         private Point _point;
-        private Bitmap _image;
-
-        //**************Temp*************
-        private int _tempCounter = 0;
-        int i = 0;
+        private Bitmap _currentImage;
+        private bool _isImageCreated;
+        //private DateTime _startTimer;
+        private int _count = 0;
+        private readonly Stopwatch _timerFrameRate;
+        private int _frameRateAdjustment = 0;
 
         #endregion
-        
+
+        #region Class Properties
+
+        public Bitmap CurrentImage
+        {
+            get { return _currentImage; }
+            set
+            {
+                _currentImage = value;
+                NotifyPropertyChanged("CurrentImage");
+            }
+        }
+
+        public bool IsImageCreated
+        {
+            get { return _isImageCreated; }
+            set { _isImageCreated = value; }
+        }
+
+        #endregion
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+
         public ImageSimulation(double[] cameraSetup)
         {
+            _timerFrameRate = new Stopwatch();
             _focalLengthMm = cameraSetup[0];
             _ccdWidthMm = cameraSetup[1];
             _ccdHeightMm = cameraSetup[2];
             _megaPixel = cameraSetup[3];
+            _isImageCreated = false;
         }
+
 
         public void StartSimulation()
         {
+            
             GetCalculationData();
             
             try
             {
                 while (!FlightStatusSingleton.GetInstance().IsTouchdown)
                 {
-                    Thread.Sleep(33);
+                    _timerFrameRate.Reset();
+                    _timerFrameRate.Start();
+
                     if(_listOfPositiveImagePixels.Count != 0)
                     {
                         DoClearData();
@@ -73,12 +114,25 @@ namespace UAVImplementation.BusinessLayer.CameraSimulator
                     if (_currentShipCoordinates != null && _currentUavFocalPointCoordinates != null)
                     {
                         GenerateCurrentImageCoordinates();
-
-                        //***********************Temp******************
-                        Console.WriteLine("*****************************");
-
+ 
                         ConstructCurrentImage();
+
+                        // Used in lieu of image processor
+                        ImageDataSingleton.GetInstance().ListOfImageCoordinates = _listOfPositiveImagePixels;
                     }
+                    
+                    if (_timerFrameRate.ElapsedMilliseconds < 33)
+                    {
+                        Thread.Sleep((int)(33 - _timerFrameRate.ElapsedMilliseconds));
+                    }
+
+
+                    //**********************Temp*********************
+                    //_count++;
+                    //if (_count < 100)
+                    //{
+                    //    //Console.WriteLine("Time = " + _timerFrameRate.ElapsedMilliseconds);
+                    //}
                 }
             }
             catch (Exception ex)
@@ -143,23 +197,32 @@ namespace UAVImplementation.BusinessLayer.CameraSimulator
 
         public void CalculateImageCoordinates()
         {
-            for (var i = 0; i < NumberOfShip3DPoint; i++)
+            try
             {
-                var nextX = 0 + (i*3);
-                var nextY = 1 + (i*3);
-                var nextZ = 2 + (i*3);
-                
-                // The second double in the focal point array is the 'y' coordinate
-                _tParameter = CalculateParameterT(_currentUavFocalPointCoordinates[1], 
-                                               _currentShipCoordinates[nextY]);
+                for (var i = 0; i < NumberOfShip3DPoint; i++)
+                {
+                    var nextX = 0 + (i * 3);
+                    var nextY = 1 + (i * 3);
+                    var nextZ = 2 + (i * 3);
 
-                var mapX = CalculateImageCoordinate(_currentShipCoordinates[nextX],
-                                                    _currentUavFocalPointCoordinates[0], _tParameter);
-                var mapZ = CalculateImageCoordinate(_currentShipCoordinates[nextZ],
-                                                    _currentUavFocalPointCoordinates[2], _tParameter);
+                    // The second double in the focal point array is the 'y' coordinate
+                    _tParameter = CalculateParameterT(_currentUavFocalPointCoordinates[1],
+                                                   _currentShipCoordinates[nextY]);
 
-                MapCoordinatesToPixels(mapX, mapZ);
+                    var mapX = CalculateImageCoordinate(_currentShipCoordinates[nextX],
+                                                        _currentUavFocalPointCoordinates[0], _tParameter);
+                    var mapZ = CalculateImageCoordinate(_currentShipCoordinates[nextZ],
+                                                        _currentUavFocalPointCoordinates[2], _tParameter);
+
+                    MapCoordinatesToPixels(mapX, mapZ);
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An Error occured in " + ex.TargetSite + "..." + ex.Message);
+                throw;
+            }
+            
         }
 
         private double CalculateParameterT(double focalyValue, double pointyCoord)
@@ -178,71 +241,71 @@ namespace UAVImplementation.BusinessLayer.CameraSimulator
 
         private void MapCoordinatesToPixels(double coordinateXMetres, double coordinateZMetres)
         {
-
-            var dx = (coordinateXMetres - _currentUavFocalPointCoordinates[0]) * ConvertMetreToMm * _pixelPerMm;
-            var dy = (coordinateZMetres - _currentUavFocalPointCoordinates[2]) * ConvertMetreToMm * _pixelPerMm;
-
-            _point.X = Convert.ToInt32(dx) + (_halfWidthInPixels);
-            _point.Y = Convert.ToInt32(-dy) + (_halfHeightInPixels); // coordinate to pixel conversion
-
-
-            if (_point.X >= 0 && _point.X < _widthInPixels && 
-                _point.Y >= 0 && _point.Y < _heightInPixels)
+            try
             {
-                _listOfPositiveImagePixels.Add(_point);
+                var dx = (coordinateXMetres - _currentUavFocalPointCoordinates[0]) * ConvertMetreToMm * _pixelPerMm;
+                var dy = (coordinateZMetres - _currentUavFocalPointCoordinates[2]) * ConvertMetreToMm * _pixelPerMm;
 
-                //****************TEMP******************
-                Console.WriteLine(_point.X + ", " + _point.Y);
+                _point.X = Convert.ToInt32(dx) + (_halfWidthInPixels);
+                _point.Y = Convert.ToInt32(-dy) + (_halfHeightInPixels); // coordinate to pixel conversion
+
+                if (_point.X >= 0 && _point.X < _widthInPixels &&
+                    _point.Y >= 0 && _point.Y < _heightInPixels)
+                {
+                    _listOfPositiveImagePixels.Add(_point);
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An Error occured in " + ex.TargetSite + "..." + ex.Message);
+                throw;
+            }
+            
         }
 
         private void ConstructCurrentImage()
         {
-            _image = new Bitmap(_widthInPixels, _heightInPixels);
-
-            var bmData = _image.LockBits(new Rectangle(0, 0, _widthInPixels, _heightInPixels), 
-                ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
-
-            var stride = bmData.Stride;
-            System.IntPtr scan0 = bmData.Scan0;
-            System.IntPtr scan1 = bmData.Scan0;
-
-            unsafe
+            try
             {
+                CurrentImage = new Bitmap(_widthInPixels, _heightInPixels);
 
-                byte* pointer = (byte*)(void*)scan0;
-                byte* pointerAssign = (byte*)(void*)scan1;
+                var bmData = CurrentImage.LockBits(new Rectangle(0, 0, _widthInPixels, _heightInPixels),
+                    ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
 
-                for (int y = 0; y < _heightInPixels; ++y)
+                var stride = bmData.Stride;
+                System.IntPtr scan0 = bmData.Scan0;
+                System.IntPtr scan1 = bmData.Scan0;
+
+                unsafe
                 {
-                    for (int x = 0; x < _widthInPixels; ++x)
+                    byte* pointer = (byte*)(void*)scan0;
+                    byte* pointerAssign = (byte*)(void*)scan1;
+
+                    for (int y = 0; y < _heightInPixels; ++y)
                     {
-                        pointer[0] = 0;
-                        pointer++;
+                        for (int x = 0; x < _widthInPixels; ++x)
+                        {
+                            pointer[0] = 0;
+                            pointer++;
+                        }
                     }
 
+                    foreach (var nextPoint in _listOfPositiveImagePixels)
+                    {
+                        pointerAssign[nextPoint.Y * stride + nextPoint.X] = 255;
+                    }
                 }
 
-                foreach(var nextPoint in _listOfPositiveImagePixels)
-                {
-                    pointerAssign[nextPoint.Y*stride + nextPoint.X] = 255;
-                    pointerAssign[nextPoint.Y * stride + nextPoint.X + 1] = 255;
-                    pointerAssign[nextPoint.Y * stride + nextPoint.X - 1] = 255;
-                    pointerAssign[(nextPoint.Y - 1) * stride + nextPoint.X] = 255;
-                    pointerAssign[(nextPoint.Y + 1) * stride + nextPoint.X] = 255;
-                }
+                CurrentImage.UnlockBits(bmData);
+
+                IsImageCreated = true;
             }
-
-            _image.UnlockBits(bmData);
-
-            //****************Temp************************
-            if ((_tempCounter < 100) && ((i % 10) == 0))
+            catch (Exception ex)
             {
-                _image.Save(@"C:\testImages\image(" + _tempCounter + ").jpg");
-                
-                _tempCounter++;
+                Console.WriteLine("An Error occured in " + ex.TargetSite + "..." + ex.Message);
+                throw;
             }
-            i++;
+
         }
 
         private void DoClearData()
